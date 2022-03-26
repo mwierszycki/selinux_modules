@@ -1,2 +1,2 @@
-# selinux_module_for_abaqus
+# SELinux module for Abaqus
 SELinux policy module for Abauqs solvers
