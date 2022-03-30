@@ -14,6 +14,7 @@ SELinux policy module for Abauqs solvers
 |`recover`          |NOT TESTED            |
 |`syntaxcheck`      |SUPPORTED             |
 |`user`[^1]         |SUPPORTED             |
+| globalmodel       |SUPPORTED             |
 |`cae`[^2]          |SUPPORTED (disabled by default) |
 |`viewer`[^2]       |SUPPORTED (disabled by default) |
 
