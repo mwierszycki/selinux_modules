@@ -21,6 +21,6 @@ SELinux policy module for Abauqs solvers
 |`viewer`[^2]       |SUPPORTED (disabled by default) |
 |`scratch`[^3]      |SUPPORTED             |
 
-[^1]: Intel OneAPI compilers with bin_t type
+[^1]: Intel OneAPI compilers with `bin_t` type
 [^2]: Remote only (with -mesa); use `set allow_abaqus_cae true` to enable 
 [^3]: Scratch dir must be labeled as `tmp_t` type
