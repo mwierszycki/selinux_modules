@@ -15,4 +15,4 @@ SELinux policy module for Abauqs solvers
 |`syntaxcheck`      |NOT TESTED            |
 |`user`[^1]         |SUPPORTED             |
 
-[^1]: Intel OneAPI compilers in bin_t domain
+[^1]: Intel OneAPI compilers with bin_t type
