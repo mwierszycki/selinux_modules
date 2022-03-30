@@ -8,8 +8,11 @@ SELinux policy module for Abauqs solvers
 |`cosimulation`     |NOT TESTED            |
 |`analysis`         |SUPPORTED             |
 |`datacheck`        |SUPPORTED             |
-|`parametercheck`   |NOT TESTED            |
+|`parametercheck`   |SUPPORTED             |
 |`continue`         |SUPPORTED             |
 |`convert`          |NOT TESTED            |
 |`recover`          |NOT TESTED            |
 |`syntaxcheck`      |NOT TESTED            |
+|`user`[^1]         |SUPPORTED             |
+
+[^1]: Intel OneAPI compilers in bin_t domain
