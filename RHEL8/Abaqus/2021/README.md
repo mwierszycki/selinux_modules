@@ -15,6 +15,7 @@ SELinux policy module for Abauqs solvers
 |`syntaxcheck`      |SUPPORTED             |
 |`user`[^1]         |SUPPORTED             |
 |`globalmodel`      |SUPPORTED             |
+|`oldjob`           |SUPPORTED             |
 |`cae`[^2]          |SUPPORTED (disabled by default) |
 |`viewer`[^2]       |SUPPORTED (disabled by default) |
 
