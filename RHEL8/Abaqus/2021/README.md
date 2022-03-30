@@ -12,7 +12,7 @@ SELinux policy module for Abauqs solvers
 |`continue`         |SUPPORTED             |
 |`convert`          |NOT TESTED            |
 |`recover`          |NOT TESTED            |
-|`syntaxcheck`      |NOT TESTED            |
+|`syntaxcheck`      |SUPPORTED             |
 |`user`[^1]         |SUPPORTED             |
 |`cae`[^2]          |SUPPORTED (disabled by default) |
 |`viewer`[^2]       |SUPPORTED (disabled by default) |
