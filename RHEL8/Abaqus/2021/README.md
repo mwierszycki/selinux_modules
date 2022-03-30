@@ -14,8 +14,8 @@ SELinux policy module for Abauqs solvers
 |`recover`          |NOT TESTED            |
 |`syntaxcheck`      |NOT TESTED            |
 |`user`[^1]         |SUPPORTED             |
-|`cae`[^2]          |SUPPORTED             |
-|`viewer`[^2]       |SUPPORTED             |
+|`cae`[^2]          |SUPPORTED (disabled by default) |
+|`viewer`[^2]       |SUPPORTED (disabled by default) |
 
 [^1]: Intel OneAPI compilers with bin_t type
-[^2]: Remote only (with -mesa)
+[^2]: Remote only (with -mesa); use `set allow_abaqus_cae true` to enable 
