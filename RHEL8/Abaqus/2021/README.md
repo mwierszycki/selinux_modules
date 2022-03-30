@@ -25,6 +25,7 @@ SELinux policy module for Abauqs solvers
 |`queue`            |NOT SUPPORTED         |
 |`optimization`     |NOT SUPPORTED         |
 |`python`[^4]       |PARTIALLY SUPPORTED   |
+|`script`[^4]       |PARTIALLY SUPPORTED   |
 
 [^1]: Intel OneAPI compilers with `bin_t` type
 [^2]: Remote only (with `-mesa`); use `set allow_abaqus_cae true` to enable 
