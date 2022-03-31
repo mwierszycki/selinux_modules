@@ -1,1 +1,710 @@
+########################################
+#
+# SELinux module for Abaqus
+# RHEL8 & Abaqus 2021
+# https://github.com/mwierszycki/selinux_modules
+# GPL-2.0 License
+#
 policy_module(abaqus, 1.0.0)
+
+########################################
+#
+# Declarations
+#
+
+require {
+	type unconfined_t;
+	type fs_t;
+	type firewalld_t;
+	type ephemeral_port_t;
+	type net_conf_t;
+	type setroubleshootd_t;
+	type syslogd_t;
+	type ldconfig_exec_t;
+	type getty_t;
+	type tuned_t;
+	type rtkit_daemon_t;
+	type sshd_t;
+	type ssh_home_t;
+	type systemd_logind_t;
+	type unreserved_port_t;
+	type user_home_dir_t;
+	type NetworkManager_t;
+	type chronyd_t;
+	type auditd_t;
+	type unconfined_service_t;
+	type hwdata_t;
+	type tmp_t;
+	type gssproxy_t;
+	type unconfined_t;
+	type irqbalance_t;
+	type crond_t;
+	type bin_t;
+	type proc_t;
+	type var_t;
+	type sysfs_t;
+	type unconfined_dbusd_t;
+	type system_dbusd_t;
+	type dbus_home_t;
+	type kernel_t;
+	type devpts_t;
+	type shell_exec_t;
+	type sssd_var_lib_t;
+	type udev_t;
+	type user_devpts_t;
+	type gconf_home_t;
+	type node_t;
+	type user_home_t;
+	type sssd_t;
+	type rpm_t;
+	type init_t;
+	type rhsmcertd_t;
+	type policykit_t;
+	type sssd_public_t;
+	type xauth_home_t;
+	type xserver_port_t;
+	type config_home_t;
+	type cache_home_t;
+	role unconfined_r;
+	type passwd_file_t;
+	type pulseaudio_home_t;
+	type sysctl_fs_t;
+	type tmpfs_t;
+	type user_tmp_t;
+	type var_lib_nfs_t;
+	type fusefs_t;
+	class chr_file { getattr ioctl read write };
+	class dir { add_name create getattr open read remove_name rmdir search setattr write lock ioctl };
+	class file { append create execmod execute execute_no_trans getattr ioctl link lock map open read rename setattr unlink write entrypoint };
+	class file { relabelfrom relabelto };
+	class process { transition execmem execstack setpgid noatsecure setsched };
+	class tcp_socket { accept bind connect create getattr getopt listen name_connect node_bind setopt shutdown read write };
+	class udp_socket { connect create getattr ioctl setopt read write };
+	class netlink_route_socket { bind create getattr getopt nlmsg_read setopt read write };
+	class fifo_file { getattr ioctl write };
+	class lnk_file read;
+	class sock_file write;
+	class filesystem getattr;
+	class unix_stream_socket connectto;
+	class capability net_admin;
+}
+
+attribute_role abaqus_roles;
+roleattribute system_r abaqus_roles;
+roleattribute unconfined_r abaqus_roles;
+
+bool allow_abaqus_cae false;
+
+type abaqus_t;
+type abaqus_bin_t;
+type abaqus_sh_t;
+type abaqus_exec_t;
+type abaqus_lib_t;
+type abaqus_code_t;
+type abaqus_tools_t;
+type abaqus_mask_t;
+type abaqus_res_t;
+type abaqus_sma_t;
+type abaqus_webapps_t;
+type abaqus_dev_t;
+type abaqus_install_t;
+type abaqus_tmp_t;
+type abaqus_elit_t;
+type abaqus_elit_exec_t;
+type abaqus_elit_lib_t;
+type abaqus_py_t;
+type abaqus_py_exec_t;
+type abaqus_py_lib_t;
+type abaqus_cae_t;
+type abaqus_cae_exec_t;
+
+role abaqus_roles types abaqus_t;
+role abaqus_roles types abaqus_bin_t;
+role abaqus_roles types abaqus_sh_t;
+role abaqus_roles types abaqus_elit_t;
+role abaqus_roles types abaqus_py_t;
+role abaqus_roles types abaqus_exec_t;
+role abaqus_roles types abaqus_elit_exec_t;
+role abaqus_roles types abaqus_py_exec_t;
+role abaqus_roles types abaqus_cae_t;
+role abaqus_roles types abaqus_cae_exec_t;
+
+domain_type(abaqus_t)
+domain_type(abaqus_bin_t)
+domain_type(abaqus_sh_t)
+domain_type(abaqus_elit_t)
+domain_type(abaqus_py_t)
+domain_type(abaqus_cae_t)
+
+domain_entry_file(abaqus_t, abaqus_exec_t)
+domain_entry_file(abaqus_bin_t, bin_t)
+domain_entry_file(abaqus_sh_t, shell_exec_t)
+domain_entry_file(abaqus_elit_t, abaqus_elit_exec_t)
+domain_entry_file(abaqus_py_t, abaqus_py_exec_t)
+domain_entry_file(abaqus_cae_t, abaqus_cae_exec_t)
+
+domain_auto_trans(unconfined_t, abaqus_exec_t, abaqus_t)
+
+domain_auto_trans(abaqus_t, abaqus_exec_t, abaqus_t)
+domain_auto_trans(abaqus_t, abaqus_elit_exec_t, abaqus_elit_t)
+domain_auto_trans(abaqus_t, abaqus_py_exec_t, abaqus_py_t)
+domain_auto_trans(abaqus_t, abaqus_cae_exec_t, abaqus_cae_t)
+
+domain_auto_trans(abaqus_py_t, abaqus_py_exec_t, abaqus_py_t)
+domain_auto_trans(abaqus_py_t, abaqus_exec_t, abaqus_t)
+domain_auto_trans(abaqus_py_t, abaqus_elit_exec_t, abaqus_elit_t)
+domain_auto_trans(abaqus_py_t, abaqus_cae_exec_t, abaqus_cae_t)
+
+domain_auto_trans(abaqus_t, bin_t, abaqus_bin_t)
+domain_auto_trans(abaqus_py_t, bin_t, abaqus_bin_t)
+domain_auto_trans(abaqus_elit_t, bin_t, abaqus_bin_t)
+
+domain_auto_trans(abaqus_t, shell_exec_t, abaqus_sh_t)
+domain_auto_trans(abaqus_py_t, shell_exec_t, abaqus_sh_t)
+domain_auto_trans(abaqus_elit_t, shell_exec_t, abaqus_sh_t)
+
+domain_auto_trans(abaqus_bin_t, bin_t, abaqus_bin_t)
+domain_auto_trans(abaqus_bin_t, shell_exec_t, abaqus_sh_t)
+
+domain_auto_trans(abaqus_sh_t, bin_t, abaqus_bin_t)
+domain_auto_trans(abaqus_sh_t, shell_exec_t, abaqus_sh_t)
+
+domain_auto_trans(abaqus_cae_t, abaqus_py_exec_t, abaqus_py_t)
+domain_auto_trans(abaqus_cae_t, abaqus_exec_t, abaqus_t)
+domain_auto_trans(abaqus_cae_t, abaqus_elit_exec_t, abaqus_elit_t)
+domain_auto_trans(abaqus_cae_t, bin_t, abaqus_bin_t)
+domain_auto_trans(abaqus_cae_t, shell_exec_t, abaqus_sh_t)
+
+#permissive abaqus_t;
+
+domain_use_interactive_fds(abaqus_t)
+
+files_read_etc_files(abaqus_t)
+files_read_etc_files(abaqus_elit_t)
+files_read_etc_files(abaqus_py_t)
+
+miscfiles_read_localization(abaqus_t)
+miscfiles_read_localization(abaqus_elit_t)
+miscfiles_read_localization(abaqus_py_t)
+
+files_tmp_file(abaqus_tmp_t)
+
+########################################
+#
+# abaqus local policy
+#
+
+allow abaqus_t abaqus_tmp_t:file manage_file_perms;
+allow abaqus_py_t abaqus_tmp_t:file manage_file_perms;
+files_tmp_filetrans(abaqus_t,abaqus_tmp_t,file)
+files_tmp_filetrans(abaqus_t,abaqus_tmp_t,dir)
+files_tmp_filetrans(abaqus_py_t,abaqus_tmp_t,file)
+files_tmp_filetrans(abaqus_py_t,abaqus_tmp_t,dir)
+files_tmp_filetrans(abaqus_bin_t,abaqus_tmp_t,file)
+files_tmp_filetrans(abaqus_bin_t,abaqus_tmp_t,dir)
+files_tmp_filetrans(abaqus_sh_t,abaqus_tmp_t,file)
+files_tmp_filetrans(abaqus_sh_t,abaqus_tmp_t,dir)
+files_tmp_filetrans(abaqus_cae_t,abaqus_tmp_t,file)
+files_tmp_filetrans(abaqus_cae_t,abaqus_tmp_t,dir)
+
+#============= unconfined_t  ==============
+allow unconfined_t abaqus_exec_t:file { write execute getattr map open read };
+allow unconfined_t abaqus_exec_t:process { transition };
+allow unconfined_t abaqus_sma_t:file { getattr open read write };
+
+#============= abaqus_t ==============
+allow abaqus_t self:netlink_route_socket { bind create getattr getopt nlmsg_read setopt };
+allow abaqus_t self:process { execmem execstack setpgid setsched };
+allow abaqus_t self:tcp_socket { accept bind connect create getattr getopt listen setopt shutdown };
+allow abaqus_t self:udp_socket { connect create getattr ioctl setopt };
+allow abaqus_t self:fifo_file manage_fifo_file_perms;
+allow abaqus_t self:unix_stream_socket create_stream_socket_perms;
+allow abaqus_t self:netlink_route_socket { read write };
+allow abaqus_t self:tcp_socket { read write };
+allow abaqus_t self:udp_socket { read write };
+
+allow abaqus_t abaqus_py_t:process { noatsecure rlimitinh siginh };
+allow abaqus_t abaqus_py_t:fifo_file write;
+allow abaqus_t abaqus_py_t:fifo_file ioctl;
+
+allow abaqus_t abaqus_elit_t:process { noatsecure };
+
+allow abaqus_t abaqus_exec_t:file execmod;
+
+allow abaqus_t abaqus_py_lib_t:file { getattr read };
+
+allow abaqus_t abaqus_sma_t:file { getattr open read };
+
+allow abaqus_t abaqus_tmp_t:dir { add_name getattr open read remove_name search write };
+
+allow abaqus_t devpts_t:dir search;
+
+allow abaqus_t ephemeral_port_t:tcp_socket name_connect;
+
+allow abaqus_t unreserved_port_t:tcp_socket name_connect;
+
+allow abaqus_t gconf_home_t:dir { getattr search };
+
+allow abaqus_t net_conf_t:file { getattr open read };
+
+allow abaqus_t proc_t:file { getattr open read };
+
+allow abaqus_t sssd_public_t:dir search;
+allow abaqus_t sssd_public_t:file map;
+allow abaqus_t sssd_public_t:file { getattr open read };
+allow abaqus_t sssd_var_lib_t:dir search;
+
+allow abaqus_t user_devpts_t:chr_file { getattr ioctl read write };
+allow abaqus_t user_devpts_t:chr_file append;
+
+allow abaqus_t user_home_dir_t:dir { add_name create getattr open read remove_name rmdir search write };
+allow abaqus_t user_home_dir_t:file { append create getattr ioctl link lock open read rename unlink write };
+allow abaqus_t user_home_t:file { append create getattr ioctl link lock open read rename unlink write };
+
+allow abaqus_t fs_t:filesystem getattr;
+allow abaqus_t sysfs_t:file { getattr open read };
+
+if (allow_abaqus_cae) {
+	allow abaqus_t abaqus_cae_t:process { noatsecure };
+	allow abaqus_t abaqus_cae_t:tcp_socket { read write };
+	allow abaqus_t abaqus_cae_t:fifo_file write;
+	allow abaqus_t abaqus_py_lib_t:file { execute map open };
+	allow abaqus_t abaqus_py_t:fifo_file getattr;
+	allow abaqus_t abaqus_res_t:file { getattr open read };
+	allow abaqus_t abaqus_tmp_t:file { map execute read write };
+
+	allow abaqus_t cache_home_t:dir getattr;
+	allow abaqus_t config_home_t:dir getattr;
+	allow abaqus_t dbus_home_t:dir getattr;
+	allow abaqus_t node_t:tcp_socket node_bind;
+	allow abaqus_t passwd_file_t:file { getattr open read };
+	allow abaqus_t pulseaudio_home_t:file getattr;
+	allow abaqus_t ssh_home_t:dir getattr;
+	allow abaqus_t sssd_t:unix_stream_socket connectto;
+	allow abaqus_t sssd_var_lib_t:sock_file write;
+	allow abaqus_t user_home_t:dir { getattr open read search };
+	allow abaqus_t var_t:dir read;
+	allow abaqus_t xauth_home_t:file { getattr open read };
+	allow abaqus_t xserver_port_t:tcp_socket name_connect;
+}
+#============= abaqus_bin_t ==============
+allow abaqus_bin_t NetworkManager_t:dir { getattr search };
+allow abaqus_bin_t NetworkManager_t:file { open read };
+
+allow abaqus_bin_t abaqus_elit_t:dir { getattr search };
+allow abaqus_bin_t abaqus_elit_t:file { open read };
+
+allow abaqus_bin_t abaqus_py_t:dir { getattr search };
+allow abaqus_bin_t abaqus_py_t:fifo_file { getattr ioctl write };
+
+allow abaqus_bin_t abaqus_py_lib_t:file getattr;
+allow abaqus_bin_t abaqus_py_t:file { open read };
+
+allow abaqus_bin_t abaqus_exec_t:file { getattr open read };
+allow abaqus_bin_t abaqus_t:fifo_file { getattr write };
+
+allow abaqus_bin_t abaqus_tmp_t:dir search;
+allow abaqus_bin_t abaqus_tmp_t:file write;
+
+allow abaqus_bin_t abaqus_res_t:file read;
+
+allow abaqus_bin_t abaqus_t:dir { getattr search };
+
+allow abaqus_bin_t auditd_t:dir { getattr search };
+allow abaqus_bin_t auditd_t:file { open read };
+
+allow abaqus_bin_t chronyd_t:dir { getattr search };
+allow abaqus_bin_t chronyd_t:file { open read };
+
+allow abaqus_bin_t crond_t:dir { getattr search };
+allow abaqus_bin_t crond_t:file { open read };
+
+allow abaqus_bin_t firewalld_t:dir { getattr search };
+allow abaqus_bin_t firewalld_t:file { open read };
+
+allow abaqus_bin_t getty_t:dir { getattr search };
+allow abaqus_bin_t getty_t:file { open read };
+
+allow abaqus_bin_t gssproxy_t:dir { getattr search };
+allow abaqus_bin_t gssproxy_t:file { open read };
+
+allow abaqus_bin_t hwdata_t:dir search;
+allow abaqus_bin_t hwdata_t:file { getattr open read };
+
+allow abaqus_bin_t init_t:dir { getattr search };
+allow abaqus_bin_t init_t:file { open read };
+
+allow abaqus_bin_t irqbalance_t:dir { getattr search };
+allow abaqus_bin_t irqbalance_t:file { open read };
+
+allow abaqus_bin_t kernel_t:dir { getattr search };
+allow abaqus_bin_t kernel_t:file { open read };
+
+allow abaqus_bin_t policykit_t:dir { getattr search };
+allow abaqus_bin_t policykit_t:file { open read };
+
+allow abaqus_bin_t proc_t:dir read;
+allow abaqus_bin_t proc_t:file { open read };
+
+allow abaqus_bin_t rhsmcertd_t:dir { getattr search };
+allow abaqus_bin_t rhsmcertd_t:file { open read };
+
+allow abaqus_bin_t rpm_t:dir { getattr search };
+allow abaqus_bin_t rpm_t:file { open read };
+
+allow abaqus_bin_t rtkit_daemon_t:dir { getattr search };
+allow abaqus_bin_t rtkit_daemon_t:file { open read };
+
+allow abaqus_bin_t sshd_t:dir { getattr search };
+allow abaqus_bin_t sshd_t:file { open read };
+
+allow abaqus_bin_t sssd_t:dir { getattr search };
+allow abaqus_bin_t sssd_t:file { open read };
+
+allow abaqus_bin_t sysfs_t:dir read;
+allow abaqus_bin_t sysfs_t:file { open read };
+allow abaqus_bin_t sysfs_t:lnk_file read;
+
+allow abaqus_bin_t syslogd_t:dir { getattr search };
+allow abaqus_bin_t syslogd_t:file { open read };
+
+allow abaqus_bin_t system_dbusd_t:dir { getattr search };
+allow abaqus_bin_t system_dbusd_t:file { open read };
+
+allow abaqus_bin_t systemd_logind_t:dir { getattr search };
+allow abaqus_bin_t systemd_logind_t:file { open read };
+
+allow abaqus_bin_t tuned_t:dir { getattr search };
+allow abaqus_bin_t tuned_t:file { open read };
+
+allow abaqus_bin_t udev_t:dir { getattr search };
+allow abaqus_bin_t udev_t:file { open read };
+
+allow abaqus_bin_t unconfined_dbusd_t:dir { getattr search };
+allow abaqus_bin_t unconfined_dbusd_t:file { open read };
+
+allow abaqus_bin_t unconfined_service_t:dir { getattr search };
+allow abaqus_bin_t unconfined_service_t:file { open read };
+
+allow abaqus_bin_t unconfined_t:dir { getattr search };
+allow abaqus_bin_t unconfined_t:file { open read };
+
+allow abaqus_bin_t user_devpts_t:chr_file { ioctl read write append };
+
+allow abaqus_bin_t user_home_dir_t:file { ioctl read write };
+allow abaqus_bin_t user_home_dir_t:dir search;
+allow abaqus_bin_t user_home_t:file read;
+allow abaqus_bin_t user_home_t:file write;
+
+if (allow_abaqus_cae) {
+	allow abaqus_bin_t abaqus_cae_exec_t:file { getattr read };
+	allow abaqus_bin_t abaqus_cae_t:dir { getattr search };
+	allow abaqus_bin_t abaqus_cae_t:file { read open };
+	allow abaqus_bin_t abaqus_cae_t:fifo_file write;
+
+	allow abaqus_bin_t abaqus_cae_t:tcp_socket { read write };
+
+	allow abaqus_bin_t abaqus_py_lib_t:file read;
+
+	allow abaqus_bin_t user_home_dir_t:file append;
+}
+
+#============= abaqus_elit_t ==============
+allow abaqus_elit_t self:netlink_route_socket { bind create getattr nlmsg_read read write };
+allow abaqus_elit_t self:process { execmem execstack };
+allow abaqus_elit_t self:tcp_socket { accept bind connect create getattr getopt listen setopt shutdown read write };
+allow abaqus_elit_t self:udp_socket { connect create getattr ioctl setopt read write };
+
+allow abaqus_elit_t abaqus_exec_t:file { map execmod execute getattr open read };
+
+allow abaqus_elit_t abaqus_py_t:fifo_file { getattr write };
+
+allow abaqus_elit_t abaqus_t:dir { getattr read search };
+allow abaqus_elit_t abaqus_t:file { getattr open read };
+
+allow abaqus_elit_t abaqus_tmp_t:file write;
+allow abaqus_elit_t abaqus_tmp_t:dir { getattr search };
+
+allow abaqus_elit_t abaqus_res_t:file read;
+
+allow abaqus_elit_t devpts_t:dir search;
+allow abaqus_elit_t ephemeral_port_t:tcp_socket name_connect;
+allow abaqus_elit_t unreserved_port_t:tcp_socket name_connect;
+allow abaqus_elit_t net_conf_t:file { getattr open read };
+allow abaqus_elit_t node_t:tcp_socket node_bind;
+allow abaqus_elit_t user_devpts_t:chr_file { getattr ioctl read write append };
+
+allow abaqus_elit_t sssd_public_t:file { map getattr open read };
+allow abaqus_elit_t sssd_public_t:dir search;
+allow abaqus_elit_t sssd_t:unix_stream_socket connectto;
+allow abaqus_elit_t sssd_var_lib_t:dir search;
+allow abaqus_elit_t sssd_var_lib_t:sock_file write;
+
+allow abaqus_elit_t user_home_t:file { read write };
+allow abaqus_elit_t user_home_dir_t:file { read write };
+allow abaqus_elit_t user_home_dir_t:dir { read search };
+
+if (allow_abaqus_cae) {
+	allow abaqus_elit_t abaqus_cae_t:tcp_socket { read write };
+	allow abaqus_elit_t abaqus_cae_t:fifo_file write;
+}
+#============= abaqus_py_t ==============
+allow abaqus_py_t self:process { execmem execstack setpgid noatsecure };
+
+allow abaqus_py_t abaqus_elit_t:process { signal rlimitinh siginh };
+allow abaqus_py_t abaqus_elit_t:process noatsecure;
+
+allow abaqus_py_t abaqus_exec_t:file execmod;
+
+allow abaqus_py_t abaqus_py_lib_t:file { execute getattr ioctl map open read };
+
+allow abaqus_py_t abaqus_res_t:file { getattr open read };
+
+allow abaqus_py_t abaqus_sma_t:file { getattr open read };
+
+allow abaqus_py_t abaqus_t:dir { getattr open read search };
+allow abaqus_py_t abaqus_t:file { getattr open read };
+
+allow abaqus_py_t abaqus_tmp_t:file map;
+allow abaqus_py_t abaqus_tmp_t:file execute;
+allow abaqus_py_t abaqus_tmp_t:dir { create rmdir setattr };
+allow abaqus_py_t abaqus_tmp_t:dir { getattr open read remove_name search write };
+
+allow abaqus_py_t abaqus_bin_t:process noatsecure;
+
+allow abaqus_py_t abaqus_sh_t:process { noatsecure rlimitinh siginh };
+
+allow abaqus_py_t abaqus_t:process noatsecure;
+
+allow abaqus_py_t abaqus_py_exec_t:process { noatsecure };
+
+allow abaqus_py_t ldconfig_exec_t:file map;
+allow abaqus_py_t ldconfig_exec_t:file { execute execute_no_trans open read };
+allow abaqus_py_t proc_t:file { getattr open read };
+
+allow abaqus_py_t sssd_public_t:file map;
+allow abaqus_py_t sssd_public_t:file { getattr open read };
+allow abaqus_py_t sssd_public_t:dir search;
+allow abaqus_py_t sssd_var_lib_t:dir search;
+allow abaqus_py_t sssd_t:unix_stream_socket connectto;
+allow abaqus_py_t sssd_var_lib_t:sock_file write;
+
+allow abaqus_py_t user_devpts_t:chr_file { getattr ioctl read write append };
+
+allow abaqus_py_t user_home_dir_t:dir { add_name create getattr open read remove_name rmdir search write };
+allow abaqus_py_t user_home_dir_t:file { append create getattr ioctl open read setattr unlink write };
+allow abaqus_py_t user_home_t:file { append create getattr ioctl open read setattr unlink write };
+allow abaqus_py_t user_home_t:dir { getattr search };
+
+if (allow_abaqus_cae) {
+	allow abaqus_py_t self:tcp_socket { create write connect shutdown };
+	allow abaqus_py_t self:udp_socket { create setopt connect write getattr read };
+	allow abaqus_py_t self:netlink_route_socket { getopt create setopt bind getattr };
+
+	allow abaqus_py_t abaqus_cae_t:process { noatsecure rlimitinh siginh };
+	allow abaqus_py_t abaqus_cae_t:tcp_socket { read write };
+	allow abaqus_py_t abaqus_t:process { rlimitinh siginh };
+	allow abaqus_py_t abaqus_cae_t:fifo_file { getattr ioctl write };
+
+	allow abaqus_py_t abaqus_bin_t:process { rlimitinh siginh };
+
+	allow abaqus_py_t net_conf_t:file { getattr open read };
+	allow abaqus_py_t ephemeral_port_t:tcp_socket name_connect;
+}
+#============= abaqus_sh_t ==============
+allow abaqus_sh_t abaqus_bin_t:process { noatsecure rlimitinh siginh };
+allow abaqus_sh_t abaqus_t:dir { getattr search };
+allow abaqus_sh_t abaqus_py_t:fifo_file write;
+allow abaqus_sh_t abaqus_tmp_t:file write;
+allow abaqus_sh_t abaqus_t:fifo_file write;
+
+allow abaqus_sh_t user_home_dir_t:file { read write append };
+allow abaqus_sh_t user_home_dir_t:dir { getattr search };
+allow abaqus_sh_t user_home_t:file { read write };
+allow abaqus_sh_t user_home_t:dir getattr;
+
+allow abaqus_sh_t user_devpts_t:chr_file { ioctl read write append };
+
+if (allow_abaqus_cae) {
+	allow abaqus_sh_t abaqus_cae_t:fifo_file write;
+	allow abaqus_sh_t abaqus_cae_t:tcp_socket { read write };
+	allow abaqus_sh_t abaqus_res_t:file read;
+}
+
+#============= abaqus_cae_t ==============
+if (allow_abaqus_cae) {
+	allow abaqus_cae_t self:netlink_route_socket { bind create getattr getopt nlmsg_read setopt write read };
+	allow abaqus_cae_t self:process { execmem execstack setpgid setsched };
+	allow abaqus_cae_t self:tcp_socket { accept bind connect create getattr getopt listen setopt shutdown write read };
+	allow abaqus_cae_t self:udp_socket { connect create getattr ioctl setopt write read };
+
+	allow abaqus_cae_t abaqus_elit_exec_t:file { map execute getattr open read };
+	
+	allow abaqus_cae_t abaqus_exec_t:file { map execmod execute getattr open read };
+	
+	allow abaqus_cae_t abaqus_py_exec_t:file { map execute getattr open read };
+
+	allow abaqus_cae_t abaqus_py_lib_t:file { execute getattr ioctl map open read };
+
+	allow abaqus_cae_t abaqus_py_t:dir { getattr search };
+	allow abaqus_cae_t abaqus_py_t:file { open read };
+	allow abaqus_cae_t abaqus_py_t:fifo_file { getattr ioctl write };
+
+	allow abaqus_cae_t abaqus_res_t:file { getattr open read };
+
+	allow abaqus_cae_t abaqus_sma_t:file { getattr open read };
+
+	allow abaqus_cae_t abaqus_t:process { noatsecure rlimitinh siginh };
+	allow abaqus_cae_t abaqus_t:dir { getattr open read search };
+	allow abaqus_cae_t abaqus_t:file { getattr open read };
+
+	allow abaqus_cae_t abaqus_tmp_t:file { execute map unlink create write };
+	
+	allow abaqus_cae_t abaqus_sh_t:process { noatsecure rlimitinh siginh };
+
+	allow abaqus_cae_t NetworkManager_t:dir { getattr search };
+	allow abaqus_cae_t NetworkManager_t:file { open read };
+	
+	allow abaqus_cae_t bin_t:file { map execute };
+
+	allow abaqus_cae_t cache_home_t:dir getattr;
+
+	allow abaqus_cae_t chronyd_t:dir { getattr search };
+	allow abaqus_cae_t chronyd_t:file { open read };
+
+	allow abaqus_cae_t config_home_t:dir getattr;
+
+	allow abaqus_cae_t crond_t:dir { getattr search };
+	allow abaqus_cae_t crond_t:file { open read };
+
+	allow abaqus_cae_t dbus_home_t:dir getattr;
+
+	allow abaqus_cae_t devpts_t:dir search;
+
+	allow abaqus_cae_t ephemeral_port_t:tcp_socket name_connect;
+
+	allow abaqus_cae_t firewalld_t:dir { getattr search };
+	allow abaqus_cae_t firewalld_t:file { open read };
+
+	allow abaqus_cae_t gconf_home_t:dir getattr;
+
+	allow abaqus_cae_t getty_t:dir { getattr search };
+	allow abaqus_cae_t getty_t:file { open read };
+
+	allow abaqus_cae_t gssproxy_t:dir { getattr search };
+	allow abaqus_cae_t gssproxy_t:file { open read };
+
+	allow abaqus_cae_t hwdata_t:dir search;
+	allow abaqus_cae_t hwdata_t:file { getattr open read };
+
+	allow abaqus_cae_t init_t:dir { getattr search };
+	allow abaqus_cae_t init_t:file { open read };
+
+	allow abaqus_cae_t irqbalance_t:dir { getattr search };
+	allow abaqus_cae_t irqbalance_t:file { open read };
+
+	allow abaqus_cae_t kernel_t:dir { getattr search };
+	allow abaqus_cae_t kernel_t:file { open read };
+
+	allow abaqus_cae_t auditd_t:dir { getattr search };
+	allow abaqus_cae_t auditd_t:file { open read };
+	
+	allow abaqus_cae_t ldconfig_exec_t:file { map execute execute_no_trans open read };
+
+	allow abaqus_cae_t net_conf_t:file { getattr open read };
+
+	allow abaqus_cae_t node_t:tcp_socket node_bind;
+
+	allow abaqus_cae_t passwd_file_t:file { getattr open read };
+
+	allow abaqus_cae_t policykit_t:dir { getattr search };
+	allow abaqus_cae_t policykit_t:file { open read };
+
+	allow abaqus_cae_t proc_t:dir read;
+	allow abaqus_cae_t proc_t:file { getattr open read };
+
+	allow abaqus_cae_t pulseaudio_home_t:file getattr;
+
+	allow abaqus_cae_t rhsmcertd_t:dir { getattr search };
+	allow abaqus_cae_t rhsmcertd_t:file { open read };
+
+	allow abaqus_cae_t rpm_t:dir { getattr search };
+	allow abaqus_cae_t rpm_t:file { open read };
+
+	allow abaqus_cae_t rtkit_daemon_t:dir { getattr search };
+	allow abaqus_cae_t rtkit_daemon_t:file { open read };
+	
+	allow abaqus_cae_t shell_exec_t:file { map execute };
+
+	allow abaqus_cae_t ssh_home_t:dir getattr;
+
+	allow abaqus_cae_t sshd_t:dir { getattr search };
+	allow abaqus_cae_t sshd_t:file { open read };
+
+	allow abaqus_cae_t sssd_public_t:dir search;
+	allow abaqus_cae_t sssd_public_t:file { map getattr open read };
+	allow abaqus_cae_t sssd_t:dir { getattr search };
+	allow abaqus_cae_t sssd_t:file { open read };
+	allow abaqus_cae_t sssd_t:unix_stream_socket connectto;
+	allow abaqus_cae_t sssd_var_lib_t:dir search;
+	allow abaqus_cae_t sssd_var_lib_t:sock_file write;
+
+	allow abaqus_cae_t sysfs_t:dir read;
+	allow abaqus_cae_t sysfs_t:file { open read getattr };
+	allow abaqus_cae_t sysfs_t:lnk_file read;
+
+	allow abaqus_cae_t syslogd_t:dir { getattr search };
+	allow abaqus_cae_t syslogd_t:file { open read };
+
+	allow abaqus_cae_t system_dbusd_t:dir { getattr search };
+	allow abaqus_cae_t system_dbusd_t:file { open read };
+
+	allow abaqus_cae_t systemd_logind_t:dir { getattr search };
+	allow abaqus_cae_t systemd_logind_t:file { open read };
+
+	allow abaqus_cae_t tmp_t:dir { add_name create read remove_name rmdir setattr write };
+	allow abaqus_cae_t tmp_t:file { map create execute unlink write };
+
+	allow abaqus_cae_t tuned_t:dir { getattr search };
+	allow abaqus_cae_t tuned_t:file { open read };
+
+	allow abaqus_cae_t udev_t:dir { getattr search };
+	allow abaqus_cae_t udev_t:file { open read };
+
+	allow abaqus_cae_t unconfined_dbusd_t:dir { getattr search };
+	allow abaqus_cae_t unconfined_dbusd_t:file { open read };
+
+	allow abaqus_cae_t unconfined_service_t:dir { getattr search };
+	allow abaqus_cae_t unconfined_service_t:file { open read };
+
+	allow abaqus_cae_t unconfined_t:dir { getattr search };
+	allow abaqus_cae_t unconfined_t:file { open read };
+
+	allow abaqus_cae_t unreserved_port_t:tcp_socket name_connect;
+
+	allow abaqus_cae_t user_devpts_t:chr_file { getattr ioctl read write append };
+
+	allow abaqus_cae_t user_home_dir_t:dir { add_name create getattr open read remove_name rmdir search write };
+	allow abaqus_cae_t user_home_dir_t:file { map append create getattr ioctl link lock open read rename setattr unlink write };
+	allow abaqus_cae_t user_home_t:dir { getattr open read search add_name write create remove_name };
+	allow abaqus_cae_t user_home_t:file { getattr lock open read rename unlink write create append };
+	allow abaqus_cae_t user_home_dir_t:file execute;
+	allow abaqus_cae_t user_tmp_t:dir search;
+	allow abaqus_cae_t user_tmp_t:dir write;
+
+	allow abaqus_cae_t var_t:dir read;
+
+	allow abaqus_cae_t var_lib_nfs_t:dir search;
+
+	allow abaqus_cae_t xauth_home_t:file { getattr open read };
+	allow abaqus_cae_t xserver_port_t:tcp_socket name_connect;
+
+	allow abaqus_cae_t fs_t:filesystem getattr;
+
+	allow abaqus_cae_t sysctl_fs_t:dir search;
+
+	allow abaqus_cae_t tmpfs_t:dir { add_name  write };
+	allow abaqus_cae_t tmpfs_t:file create;
+
+	allow abaqus_cae_t fusefs_t:dir write;
+}
