@@ -18,6 +18,8 @@ SELinux policy module for Abauqs solvers
 |`oldjob`           |SUPPORTED             |
 |`double`           |SUPPORTED             |
 |`cae`[^2]          |SUPPORTED (disabled by default) |
+|`cae replay`[^4]   |PARTIALLY SUPPORTED   |
+|`cae nogui`[^4]    |PARTIALLY SUPPORTED   |
 |`viewer`[^2]       |SUPPORTED (disabled by default) |
 |`scratch`[^3]      |SUPPORTED             |
 |`fmu`              |NOT TESTED            |
@@ -26,6 +28,8 @@ SELinux policy module for Abauqs solvers
 |`optimization`     |NOT SUPPORTED         |
 |`python`[^4]       |PARTIALLY SUPPORTED   |
 |`script`[^4]       |PARTIALLY SUPPORTED   |
+
+
 
 [^1]: Intel OneAPI compilers with `bin_t` type
 [^2]: Remote only (with `-mesa`); use `set allow_abaqus_cae true` to enable 
