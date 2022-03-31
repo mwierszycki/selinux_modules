@@ -4,7 +4,8 @@ SELinux policy module for Abaqus dedicated to block a possible malicious code ex
 Abaqus version: 2021 GA
 Distribution: Red Hat Enterprise Linux release 8.5 (Ootpa)
 
-Still under development. Heavlly testing required. 
+Still under development. Heavily testing required.
+Feedback and contribution welcome!
 
 ## Supported command
 
@@ -25,6 +26,9 @@ Still under development. Heavlly testing required.
 |`cpus`             |SUPPORTED             |
 |`mp_mode`          |SUPPORTED             |
 |`threads_per_mpi_process`|NOT TESTED             |
+|`parallel`         |SUPPORTED             |
+|`domains`          |NOT TESTED            |
+|`dynamic_load_balancing`|NOT TESTED            |
 |`standard_parallel`|SUPPORTED             |
 |`gpus`             |NOT TESTED            |
 |`memory`           |SUPPORTED             |
@@ -36,7 +40,7 @@ Still under development. Heavlly testing required.
 |`host`             |NOT TESTED            |
 |`csedirector`      |NOT TESTED            |
 |`csedirector`      |NOT TESTED            |
-|` timeout`         |NOT TESTED            |
+|`timeout`          |NOT TESTED            |
 |`unconnected_regions`|NOT TESTED            |
 |`noFlexBody`       |NOT TESTED            |
 |`user`[^1]         |SUPPORTED             |
