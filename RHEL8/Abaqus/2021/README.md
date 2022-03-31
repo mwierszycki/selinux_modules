@@ -4,7 +4,7 @@ SELinux policy module for Abaqus dedicated to block a possible malicious code ex
 Abaqus version: 2021 GA<br />
 Distribution: Red Hat Enterprise Linux release 8.5 (Ootpa)
 
-Still under development. Heavily testing required.
+Still under development. Heavy testing required.
 
 Feedback and contribution welcome!
 
