@@ -18,8 +18,8 @@ SELinux policy module for Abauqs solvers
 |`oldjob`           |SUPPORTED             |
 |`double`           |SUPPORTED             |
 |`cae`[^2]          |SUPPORTED (disabled by default) |
-|`cae replay`[^4]   |PARTIALLY SUPPORTED   |
-|`cae nogui`[^4]    |PARTIALLY SUPPORTED   |
+|`replay`[^4]       |PARTIALLY SUPPORTED   |
+|`nogui`[^4]        |PARTIALLY SUPPORTED   |
 |`viewer`[^2]       |SUPPORTED (disabled by default) |
 |`scratch`[^3]      |SUPPORTED             |
 |`fmu`              |NOT TESTED            |
