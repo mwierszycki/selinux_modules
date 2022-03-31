@@ -5,7 +5,8 @@
 # https://github.com/mwierszycki/selinux_modules
 # GPL-2.0 License
 #
-policy_module(abaqus, 1.0.0)
+
+policy_module(abaqus, 1.0.1)
 
 ########################################
 #
@@ -73,9 +74,12 @@ require {
 	type user_tmp_t;
 	type var_lib_nfs_t;
 	type fusefs_t;
+	type cgroup_t;
+	type ld_so_cache_t;
+	type ifconfig_exec_t;
 	class chr_file { getattr ioctl read write };
 	class dir { add_name create getattr open read remove_name rmdir search setattr write lock ioctl };
-	class file { append create execmod execute execute_no_trans getattr ioctl link lock map open read rename setattr unlink write entrypoint };
+	class file { append create execmod execute execute_no_trans getattr ioctl link lock map open read rename setattr unlink write entrypoint search };
 	class file { relabelfrom relabelto };
 	class process { transition execmem execstack setpgid noatsecure setsched };
 	class tcp_socket { accept bind connect create getattr getopt listen name_connect node_bind setopt shutdown read write };
@@ -262,7 +266,15 @@ allow abaqus_t user_home_dir_t:file { append create getattr ioctl link lock open
 allow abaqus_t user_home_t:file { append create getattr ioctl link lock open read rename unlink write };
 
 allow abaqus_t fs_t:filesystem getattr;
+
 allow abaqus_t sysfs_t:file { getattr open read };
+allow abaqus_t sysfs_t:dir read;
+allow abaqus_t sysfs_t:lnk_file read;
+
+allow abaqus_t cgroup_t:dir search;
+allow abaqus_t cgroup_t:file { open read };
+
+allow abaqus_t ld_so_cache_t:file execute;
 
 if (allow_abaqus_cae) {
 	allow abaqus_t abaqus_cae_t:process { noatsecure };
@@ -301,9 +313,9 @@ allow abaqus_bin_t abaqus_py_lib_t:file getattr;
 allow abaqus_bin_t abaqus_py_t:file { open read };
 
 allow abaqus_bin_t abaqus_exec_t:file { getattr open read };
-allow abaqus_bin_t abaqus_t:fifo_file { getattr write };
+allow abaqus_bin_t abaqus_t:fifo_file { getattr write read };
 
-allow abaqus_bin_t abaqus_tmp_t:dir search;
+allow abaqus_bin_t abaqus_tmp_t:dir { search getattr };
 allow abaqus_bin_t abaqus_tmp_t:file write;
 
 allow abaqus_bin_t abaqus_res_t:file read;
@@ -360,6 +372,9 @@ allow abaqus_bin_t sshd_t:file { open read };
 
 allow abaqus_bin_t sssd_t:dir { getattr search };
 allow abaqus_bin_t sssd_t:file { open read };
+allow abaqus_bin_t sssd_public_t:dir search;
+allow abaqus_bin_t sssd_public_t:file { map getattr open read };
+allow abaqus_bin_t sssd_var_lib_t:dir search;
 
 allow abaqus_bin_t sysfs_t:dir read;
 allow abaqus_bin_t sysfs_t:file { open read };
@@ -450,6 +465,7 @@ if (allow_abaqus_cae) {
 }
 #============= abaqus_py_t ==============
 allow abaqus_py_t self:process { execmem execstack setpgid noatsecure };
+allow abaqus_py_t self:netlink_route_socket nlmsg_read;
 
 allow abaqus_py_t abaqus_elit_t:process { signal rlimitinh siginh };
 allow abaqus_py_t abaqus_elit_t:process noatsecure;
@@ -467,7 +483,7 @@ allow abaqus_py_t abaqus_t:file { getattr open read };
 
 allow abaqus_py_t abaqus_tmp_t:file map;
 allow abaqus_py_t abaqus_tmp_t:file execute;
-allow abaqus_py_t abaqus_tmp_t:dir { create rmdir setattr };
+allow abaqus_py_t abaqus_tmp_t:dir { create rmdir setattr add_name };
 allow abaqus_py_t abaqus_tmp_t:dir { getattr open read remove_name search write };
 
 allow abaqus_py_t abaqus_bin_t:process noatsecure;
@@ -480,6 +496,10 @@ allow abaqus_py_t abaqus_py_exec_t:process { noatsecure };
 
 allow abaqus_py_t ldconfig_exec_t:file map;
 allow abaqus_py_t ldconfig_exec_t:file { execute execute_no_trans open read };
+
+allow abaqus_py_t ifconfig_exec_t:file map;
+allow abaqus_py_t ifconfig_exec_t:file { execute execute_no_trans getattr open read };
+
 allow abaqus_py_t proc_t:file { getattr open read };
 
 allow abaqus_py_t sssd_public_t:file map;
@@ -513,15 +533,18 @@ if (allow_abaqus_cae) {
 }
 #============= abaqus_sh_t ==============
 allow abaqus_sh_t abaqus_bin_t:process { noatsecure rlimitinh siginh };
-allow abaqus_sh_t abaqus_t:dir { getattr search };
+allow abaqus_sh_t abaqus_t:dir { getattr search read };
 allow abaqus_sh_t abaqus_py_t:fifo_file write;
-allow abaqus_sh_t abaqus_tmp_t:file write;
-allow abaqus_sh_t abaqus_t:fifo_file write;
+allow abaqus_sh_t abaqus_tmp_t:file { getattr search read write };
+allow abaqus_sh_t abaqus_tmp_t:dir { getattr search read write };
+allow abaqus_sh_t abaqus_t:fifo_file { getattr ioctl read write };
 
 allow abaqus_sh_t user_home_dir_t:file { read write append };
 allow abaqus_sh_t user_home_dir_t:dir { getattr search };
 allow abaqus_sh_t user_home_t:file { read write };
 allow abaqus_sh_t user_home_t:dir getattr;
+
+allow abaqus_sh_t sysfs_t:dir read;
 
 allow abaqus_sh_t user_devpts_t:chr_file { ioctl read write append };
 
@@ -708,3 +731,37 @@ if (allow_abaqus_cae) {
 
 	allow abaqus_cae_t fusefs_t:dir write;
 }
+
+allow abaqus_t setroubleshootd_t:dir { getattr search };
+allow abaqus_t setroubleshootd_t:file { open read };
+allow abaqus_bin_t setroubleshootd_t:dir { getattr search };
+allow abaqus_bin_t setroubleshootd_t:file { open read };
+allow abaqus_sh_t setroubleshootd_t:dir { getattr search };
+allow abaqus_sh_t setroubleshootd_t:file { open read };
+allow abaqus_elit_t setroubleshootd_t:dir { getattr search };
+allow abaqus_elit_t setroubleshootd_t:file { open read };
+allow abaqus_py_t setroubleshootd_t:dir { getattr search };
+allow abaqus_py_t setroubleshootd_t:file { open read };
+allow abaqus_cae_t setroubleshootd_t:dir { getattr search };
+allow abaqus_cae_t setroubleshootd_t:file { open read };
+#============= setroubleshootd_t ==============
+allow setroubleshootd_t abaqus_lib_t:file getattr;
+allow setroubleshootd_t abaqus_res_t:file getattr;
+allow setroubleshootd_t abaqus_sma_t:file getattr;
+allow setroubleshootd_t abaqus_install_t:file getattr;
+allow setroubleshootd_t abaqus_t:file getattr;
+allow setroubleshootd_t abaqus_bin_t:file getattr;
+allow setroubleshootd_t abaqus_sh_t:file getattr;
+allow setroubleshootd_t abaqus_exec_t:file getattr;
+allow setroubleshootd_t abaqus_code_t:file getattr;
+allow setroubleshootd_t abaqus_tools_t:file getattr;
+allow setroubleshootd_t abaqus_mask_t:file getattr;
+allow setroubleshootd_t abaqus_webapps_t:file getattr;
+allow setroubleshootd_t abaqus_dev_t:file getattr;
+allow setroubleshootd_t abaqus_tmp_t:file getattr;
+allow setroubleshootd_t abaqus_elit_t:file getattr;
+allow setroubleshootd_t abaqus_elit_exec_t:file getattr;
+allow setroubleshootd_t abaqus_elit_lib_t:file getattr;
+allow setroubleshootd_t abaqus_py_t:file getattr;
+allow setroubleshootd_t abaqus_py_exec_t:file getattr;
+allow setroubleshootd_t abaqus_py_lib_t:file getattr;
