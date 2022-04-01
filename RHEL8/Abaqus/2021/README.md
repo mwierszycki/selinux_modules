@@ -67,4 +67,4 @@ Feedback and contribution welcome!
 [^2]: Remote only (with `-mesa`); use `set allow_abaqus_cae true` to enable 
 [^3]: Scratch dir must be labeled as `tmp_t` type
 [^4]: Python interpreter is confined strictly for Abaqus solvers execution (and GUI if enabled) - many other calls are intentionally blocked
-[^5]: usub_lib_dir must be labeled as `abaqus_user_lib_dir_t` type
+[^5]: `usub_lib_dir` must be labeled as `abaqus_user_lib_dir_t` type
