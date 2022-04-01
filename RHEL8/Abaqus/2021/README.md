@@ -63,7 +63,7 @@ Feedback and contribution welcome!
 
 
 
-[^1]: Intel OneAPI compilers with `bin_t` type
+[^1]: Intel OneAPI compilers labeled as `bin_t` type
 [^2]: Remote only (with `-mesa`); use `set allow_abaqus_cae true` to enable 
 [^3]: Scratch dir must be labeled as `tmp_t` type
 [^4]: Python interpreter is confined strictly for Abaqus solvers execution (and GUI if enabled) - many other calls are intentionally blocked
