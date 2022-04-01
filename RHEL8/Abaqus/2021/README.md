@@ -60,7 +60,7 @@ Feedback and contribution welcome!
 |`optimization`     |NOT SUPPORTED         |
 |`python`[^4]       |PARTIALLY SUPPORTED   |
 |`script`[^4]       |PARTIALLY SUPPORTED   |
-
+|`make`             |NOT TESTED            |
 
 
 [^1]: Intel OneAPI compilers labeled as `bin_t` type
