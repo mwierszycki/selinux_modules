@@ -6,7 +6,7 @@
 # GPL-2.0 License
 #
 
-policy_module(abaqus, 1.0.1)
+policy_module(abaqus, 1.0.3)
 
 ########################################
 #
@@ -768,37 +768,3 @@ if (allow_abaqus_cae) {
 
 	allow abaqus_cae_t fusefs_t:dir write;
 }
-
-allow abaqus_t setroubleshootd_t:dir { getattr search };
-allow abaqus_t setroubleshootd_t:file { open read };
-allow abaqus_bin_t setroubleshootd_t:dir { getattr search };
-allow abaqus_bin_t setroubleshootd_t:file { open read };
-allow abaqus_sh_t setroubleshootd_t:dir { getattr search };
-allow abaqus_sh_t setroubleshootd_t:file { open read };
-allow abaqus_elit_t setroubleshootd_t:dir { getattr search };
-allow abaqus_elit_t setroubleshootd_t:file { open read };
-allow abaqus_py_t setroubleshootd_t:dir { getattr search };
-allow abaqus_py_t setroubleshootd_t:file { open read };
-allow abaqus_cae_t setroubleshootd_t:dir { getattr search };
-allow abaqus_cae_t setroubleshootd_t:file { open read };
-#============= setroubleshootd_t ==============
-allow setroubleshootd_t abaqus_lib_t:file getattr;
-allow setroubleshootd_t abaqus_res_t:file getattr;
-allow setroubleshootd_t abaqus_sma_t:file getattr;
-allow setroubleshootd_t abaqus_install_t:file getattr;
-allow setroubleshootd_t abaqus_t:file getattr;
-allow setroubleshootd_t abaqus_bin_t:file getattr;
-allow setroubleshootd_t abaqus_sh_t:file getattr;
-allow setroubleshootd_t abaqus_exec_t:file getattr;
-allow setroubleshootd_t abaqus_code_t:file getattr;
-allow setroubleshootd_t abaqus_tools_t:file getattr;
-allow setroubleshootd_t abaqus_mask_t:file getattr;
-allow setroubleshootd_t abaqus_webapps_t:file getattr;
-allow setroubleshootd_t abaqus_dev_t:file getattr;
-allow setroubleshootd_t abaqus_tmp_t:file getattr;
-allow setroubleshootd_t abaqus_elit_t:file getattr;
-allow setroubleshootd_t abaqus_elit_exec_t:file getattr;
-allow setroubleshootd_t abaqus_elit_lib_t:file getattr;
-allow setroubleshootd_t abaqus_py_t:file getattr;
-allow setroubleshootd_t abaqus_py_exec_t:file getattr;
-allow setroubleshootd_t abaqus_py_lib_t:file getattr;
