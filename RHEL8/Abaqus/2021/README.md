@@ -59,9 +59,9 @@ Feedback and contribution welcome!
 |`optimization`     |NOT SUPPORTED         |
 |`python`[^4]       |PARTIALLY SUPPORTED   |
 |`script`[^4]       |PARTIALLY SUPPORTED   |
-|`make library`[^5] |SUPPORTED             |
+|`make library`[^1][^5] |SUPPORTED             |
 |`make job`         |NOT TESTED            |
-|`uniquelibs`[^5]   |SUPPORTED             |
+|`uniquelibs`[^1][^5]   |SUPPORTED             |
 
 [^1]: Intel OneAPI compilers labeled as `bin_t` type
 [^2]: Remote only (with `-mesa`); use `set allow_abaqus_cae true` to enable 
