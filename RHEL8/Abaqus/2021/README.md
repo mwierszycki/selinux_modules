@@ -60,10 +60,11 @@ Feedback and contribution welcome!
 |`optimization`     |NOT SUPPORTED         |
 |`python`[^4]       |PARTIALLY SUPPORTED   |
 |`script`[^4]       |PARTIALLY SUPPORTED   |
-|`make`             |NOT TESTED            |
-
+|`make library`[^5] |SUPPORTED             |
+|`make job`         |NOT TESTED            |
 
 [^1]: Intel OneAPI compilers labeled as `bin_t` type
 [^2]: Remote only (with `-mesa`); use `set allow_abaqus_cae true` to enable 
 [^3]: Scratch dir must be labeled as `tmp_t` type
 [^4]: Python interpreter is confined strictly for Abaqus solvers execution (and GUI if enabled) - many other calls are intentionally blocked
+[^5]: usub_lib_dir must be labeled as `abaqus_user_lib_dir_t` type
