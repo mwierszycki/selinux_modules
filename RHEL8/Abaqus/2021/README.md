@@ -45,7 +45,7 @@ Feedback and contribution welcome!
 |`unconnected_regions`|NOT TESTED            |
 |`noFlexBody`       |NOT TESTED            |
 |`user`[^1]         |SUPPORTED             |
-|`uniquelibs`       |NOT TESTED            |
+|`uniquelibs`       |SUPPORTED             |
 |`globalmodel`      |SUPPORTED             |
 |`oldjob`           |SUPPORTED             |
 |`double`           |SUPPORTED             |
