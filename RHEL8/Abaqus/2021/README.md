@@ -45,7 +45,6 @@ Feedback and contribution welcome!
 |`unconnected_regions`|NOT TESTED            |
 |`noFlexBody`       |NOT TESTED            |
 |`user`[^1]         |SUPPORTED             |
-|`uniquelibs`[^5]   |SUPPORTED             |
 |`globalmodel`      |SUPPORTED             |
 |`oldjob`           |SUPPORTED             |
 |`double`           |SUPPORTED             |
@@ -62,6 +61,7 @@ Feedback and contribution welcome!
 |`script`[^4]       |PARTIALLY SUPPORTED   |
 |`make library`[^5] |SUPPORTED             |
 |`make job`         |NOT TESTED            |
+|`uniquelibs`[^5]   |SUPPORTED             |
 
 [^1]: Intel OneAPI compilers labeled as `bin_t` type
 [^2]: Remote only (with `-mesa`); use `set allow_abaqus_cae true` to enable 
