@@ -6,7 +6,7 @@
 # GPL-2.0 License
 #
 
-policy_module(abaqus, 1.0.1)
+policy_module(abaqus, 1.0.2)
 
 ########################################
 #
@@ -88,7 +88,7 @@ require {
 	class fifo_file { getattr ioctl write };
 	class lnk_file read;
 	class sock_file write;
-	class filesystem getattr;
+	class filesystem { getattr associate };
 	class unix_stream_socket connectto;
 	class capability net_admin;
 }
@@ -121,6 +121,8 @@ type abaqus_py_exec_t;
 type abaqus_py_lib_t;
 type abaqus_cae_t;
 type abaqus_cae_exec_t;
+# type for usub_lib_dir
+type abaqus_user_lib_dir_t;
 
 role abaqus_roles types abaqus_t;
 role abaqus_roles types abaqus_bin_t;
@@ -215,6 +217,8 @@ files_tmp_filetrans(abaqus_cae_t,abaqus_tmp_t,dir)
 allow unconfined_t abaqus_exec_t:file { write execute getattr map open read };
 allow unconfined_t abaqus_exec_t:process { transition };
 allow unconfined_t abaqus_sma_t:file { getattr open read write };
+allow unconfined_t abaqus_user_lib_dir_t:dir { getattr open read remove_name search write };
+allow unconfined_t abaqus_user_lib_dir_t:file { getattr unlink };
 
 #============= abaqus_t ==============
 allow abaqus_t self:netlink_route_socket { bind create getattr getopt nlmsg_read setopt };
@@ -233,7 +237,7 @@ allow abaqus_t abaqus_py_t:fifo_file ioctl;
 
 allow abaqus_t abaqus_elit_t:process { noatsecure };
 
-allow abaqus_t abaqus_exec_t:file execmod;
+allow abaqus_t abaqus_exec_t:file { execmod execute };
 
 allow abaqus_t abaqus_py_lib_t:file { getattr read };
 
@@ -262,8 +266,12 @@ allow abaqus_t user_devpts_t:chr_file { getattr ioctl read write };
 allow abaqus_t user_devpts_t:chr_file append;
 
 allow abaqus_t user_home_dir_t:dir { add_name create getattr open read remove_name rmdir search write };
-allow abaqus_t user_home_dir_t:file { append create getattr ioctl link lock open read rename unlink write };
+allow abaqus_t user_home_dir_t:file { map append create getattr ioctl link lock open read rename unlink write };
 allow abaqus_t user_home_t:file { append create getattr ioctl link lock open read rename unlink write };
+# The dir poined with usub_lib_dir should be labeled as abaqus_user_lib_dir_t
+allow abaqus_t abaqus_user_lib_dir_t:dir { getattr search };
+allow abaqus_t abaqus_user_lib_dir_t:file { execmod execute };
+allow abaqus_t abaqus_user_lib_dir_t:file { getattr map open read };
 
 allow abaqus_t fs_t:filesystem getattr;
 
@@ -313,14 +321,26 @@ allow abaqus_bin_t abaqus_py_lib_t:file getattr;
 allow abaqus_bin_t abaqus_py_t:file { open read };
 
 allow abaqus_bin_t abaqus_exec_t:file { getattr open read };
+allow abaqus_bin_t abaqus_exec_t:file map;
+allow abaqus_bin_t abaqus_exec_t:file { execute ioctl };
+
 allow abaqus_bin_t abaqus_t:fifo_file { getattr write read };
+
+allow abaqus_bin_t abaqus_lib_t:file { getattr map open read };
 
 allow abaqus_bin_t abaqus_tmp_t:dir { search getattr };
 allow abaqus_bin_t abaqus_tmp_t:file write;
+allow abaqus_bin_t abaqus_tmp_t:dir { add_name write };
+allow abaqus_bin_t abaqus_tmp_t:file map;
+allow abaqus_bin_t abaqus_tmp_t:file { create setattr unlink };
 
 allow abaqus_bin_t abaqus_res_t:file read;
 
 allow abaqus_bin_t abaqus_t:dir { getattr search };
+
+allow abaqus_bin_t abaqus_code_t:file { getattr open read };
+
+allow abaqus_bin_t abaqus_dev_t:file { getattr open read };
 
 allow abaqus_bin_t auditd_t:dir { getattr search };
 allow abaqus_bin_t auditd_t:file { open read };
@@ -405,11 +425,13 @@ allow abaqus_bin_t unconfined_t:dir { getattr search };
 allow abaqus_bin_t unconfined_t:file { open read };
 
 allow abaqus_bin_t user_devpts_t:chr_file { ioctl read write append };
+allow abaqus_bin_t user_devpts_t:chr_file getattr;
 
 allow abaqus_bin_t user_home_dir_t:file { ioctl read write };
 allow abaqus_bin_t user_home_dir_t:dir search;
 allow abaqus_bin_t user_home_t:file read;
 allow abaqus_bin_t user_home_t:file write;
+allow abaqus_bin_t user_home_t:dir getattr;
 
 if (allow_abaqus_cae) {
 	allow abaqus_bin_t abaqus_cae_exec_t:file { getattr read };
@@ -442,6 +464,8 @@ allow abaqus_elit_t abaqus_tmp_t:dir { getattr search };
 
 allow abaqus_elit_t abaqus_res_t:file read;
 
+allow abaqus_elit_t abaqus_user_lib_dir_t:dir { getattr search };
+
 allow abaqus_elit_t devpts_t:dir search;
 allow abaqus_elit_t ephemeral_port_t:tcp_socket name_connect;
 allow abaqus_elit_t unreserved_port_t:tcp_socket name_connect;
@@ -457,7 +481,7 @@ allow abaqus_elit_t sssd_var_lib_t:sock_file write;
 
 allow abaqus_elit_t user_home_t:file { read write };
 allow abaqus_elit_t user_home_dir_t:file { read write };
-allow abaqus_elit_t user_home_dir_t:dir { read search };
+allow abaqus_elit_t user_home_dir_t:dir { search read };
 
 if (allow_abaqus_cae) {
 	allow abaqus_elit_t abaqus_cae_t:tcp_socket { read write };
@@ -494,6 +518,13 @@ allow abaqus_py_t abaqus_t:process noatsecure;
 
 allow abaqus_py_t abaqus_py_exec_t:process { noatsecure };
 
+allow abaqus_py_t abaqus_dev_t:file { getattr open read };
+
+allow abaqus_py_t abaqus_lib_t:file getattr;
+
+allow abaqus_py_t abaqus_user_lib_dir_t:dir { add_name getattr open read search write };
+allow abaqus_py_t abaqus_user_lib_dir_t:file { create getattr open setattr write };
+
 allow abaqus_py_t ldconfig_exec_t:file map;
 allow abaqus_py_t ldconfig_exec_t:file { execute execute_no_trans open read };
 
@@ -511,10 +542,10 @@ allow abaqus_py_t sssd_var_lib_t:sock_file write;
 
 allow abaqus_py_t user_devpts_t:chr_file { getattr ioctl read write append };
 
-allow abaqus_py_t user_home_dir_t:dir { add_name create getattr open read remove_name rmdir search write };
-allow abaqus_py_t user_home_dir_t:file { append create getattr ioctl open read setattr unlink write };
 allow abaqus_py_t user_home_t:file { append create getattr ioctl open read setattr unlink write };
 allow abaqus_py_t user_home_t:dir { getattr search };
+allow abaqus_py_t user_home_dir_t:dir { add_name create getattr open read remove_name rmdir search write };
+allow abaqus_py_t user_home_dir_t:file { getattr append create ioctl open read setattr unlink write };
 
 if (allow_abaqus_cae) {
 	allow abaqus_py_t self:tcp_socket { create write connect shutdown };
@@ -553,6 +584,9 @@ if (allow_abaqus_cae) {
 	allow abaqus_sh_t abaqus_cae_t:tcp_socket { read write };
 	allow abaqus_sh_t abaqus_res_t:file read;
 }
+
+#============= abaqus_user_lib_dir_t ==============
+allow abaqus_user_lib_dir_t fs_t:filesystem associate;
 
 #============= abaqus_cae_t ==============
 if (allow_abaqus_cae) {
