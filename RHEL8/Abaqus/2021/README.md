@@ -70,6 +70,10 @@ Feedback and contribution welcome!
 |`make library`[^1][^5] |SUPPORTED             |
 |`make job`         |NOT TESTED            |
 |`uniquelibs`[^1][^5]   |SUPPORTED             |
+|`sim_version`      |SUPPORTED             |
+|`odb2sim`          |SUPPORTED             |
+|`odbreport`        |SUPPORTED             |
+|`restartjoin`      |SUPPORTED             |
 
 [^1]: Intel OneAPI compilers labeled as `bin_t` type
 [^2]: Remote only (with `-mesa`); use `set allow_abaqus_cae true` to enable 
