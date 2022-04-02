@@ -7,8 +7,9 @@ Distribution: Red Hat Enterprise Linux release 8.5 (Ootpa)
 
 SELinux configuration:
  - Policy: targeted
+ - Policy version: 31
  - Mode: enforcing
- - Policy Version: 31
+ 
  
 ## Status
 Not for production use! Still under development. Heavy testing required.
