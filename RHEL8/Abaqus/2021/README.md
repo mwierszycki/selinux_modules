@@ -1,14 +1,21 @@
 # SELinux module for Abaqus
 SELinux policy module for Abaqus dedicated to block a possible malicious code execution via subroutines and Python scripts e.g. in cloud services or in Abaqus/CAE jobs.
 
-Abaqus version: 2021 GA<br />
+Abaqus version: 2021 GA
+
 Distribution: Red Hat Enterprise Linux release 8.5 (Ootpa)
 
-Still under development. Heavy testing required.
+SELinux configuration:
+ - Policy: targeted
+ - Mode: enforcing
+ - Policy Version: 31
+ 
+## Status
+Not for production use! Still under development. Heavy testing required.
 
 Feedback and contribution welcome!
 
-## Supported command
+### Supported command
 
 | Abaqus command    | Status               | 
 |-------------------|----------------------|
