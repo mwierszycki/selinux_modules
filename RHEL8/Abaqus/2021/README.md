@@ -9,7 +9,8 @@ SELinux configuration:
  - Policy: targeted
  - Policy version: 31
  - Mode: enforcing
- 
+
+Directory 
  
 ## Status
 Not for production use. Still under development. Heavy testing required.
@@ -23,7 +24,7 @@ Feedback and contribution welcome!
 |`help`             |SUPPORTED             |
 |`information`      |PARTIALLY SUPPORTED   |
 |`cosimulation`     |NOT TESTED            |
-|`analysis`         |SUPPORTED             |
+|`analysis`[^1]     |SUPPORTED             |
 |`input`            |SUPPORTED             |
 |`datacheck`        |SUPPORTED             |
 |`parametercheck`   |SUPPORTED             |
@@ -52,31 +53,32 @@ Feedback and contribution welcome!
 |`timeout`          |NOT TESTED            |
 |`unconnected_regions`|NOT TESTED            |
 |`noFlexBody`       |NOT TESTED            |
-|`user`[^1]         |SUPPORTED             |
+|`user`[^2]         |SUPPORTED             |
 |`globalmodel`      |SUPPORTED             |
 |`oldjob`           |SUPPORTED             |
 |`double`           |SUPPORTED             |
-|`cae`[^2]          |SUPPORTED (disabled by default) |
-|`replay`[^4]       |PARTIALLY SUPPORTED   |
-|`nogui`[^4]        |PARTIALLY SUPPORTED   |
-|`viewer`[^2]       |SUPPORTED (disabled by default) |
-|`scratch`[^3]      |SUPPORTED             |
+|`cae`[^3]          |SUPPORTED (disabled by default) |
+|`replay`[^5]       |PARTIALLY SUPPORTED   |
+|`nogui`[^5]        |PARTIALLY SUPPORTED   |
+|`viewer`[^3]       |SUPPORTED (disabled by default) |
+|`scratch`[^4]      |SUPPORTED             |
 |`fmu`              |NOT TESTED            |
 |`fmuinstance`      |NOT TESTED            |
 |`queue`            |NOT SUPPORTED         |
 |`optimization`     |NOT SUPPORTED         |
-|`python`[^4]       |PARTIALLY SUPPORTED   |
-|`script`[^4]       |PARTIALLY SUPPORTED   |
-|`make library`[^1][^5] |SUPPORTED             |
+|`python`[^5]       |PARTIALLY SUPPORTED   |
+|`script`[^5]       |PARTIALLY SUPPORTED   |
+|`make library`[^2][^6] |SUPPORTED             |
 |`make job`         |NOT TESTED            |
-|`uniquelibs`[^1][^5]   |SUPPORTED             |
+|`uniquelibs`[^2][^6]   |SUPPORTED             |
 |`sim_version`      |SUPPORTED             |
 |`odb2sim`          |SUPPORTED             |
 |`odbreport`        |SUPPORTED             |
 |`restartjoin`      |SUPPORTED             |
 
-[^1]: Intel OneAPI compilers labeled as `bin_t` type
-[^2]: Remote only (with `-mesa`); use `set allow_abaqus_cae true` to enable 
-[^3]: Scratch dir must be labeled as `tmp_t` type
-[^4]: Python interpreter is confined strictly for Abaqus solvers execution (and GUI if enabled) - many other calls are intentionally blocked
-[^5]: `usub_lib_dir` must be labeled as `abaqus_user_lib_dir_t` type
+[^1]: Working dir must be labeled as `abaqus_job_dir_t` type
+[^2]: Intel OneAPI compilers labeled as `bin_t` type
+[^3]: Remote only (with `-mesa`); use `set allow_abaqus_cae true` to enable 
+[^4]: Scratch dir must be labeled as `tmp_t` type
+[^5]: Python interpreter is confined strictly for Abaqus solvers execution (and GUI if enabled) - many other calls are intentionally blocked
+[^6]: `usub_lib_dir` must be labeled as `abaqus_user_lib_dir_t` type
