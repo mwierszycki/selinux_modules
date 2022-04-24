@@ -10,8 +10,6 @@ SELinux configuration:
  - Policy version: 31
  - Mode: enforcing
 
-Directory 
- 
 ## Status
 Not for production use. Still under development. Heavy testing required.
 
