@@ -26,12 +26,12 @@ Feedback and contribution welcome!
 |`cosimulation`     |NOT TESTED            |
 |`analysis`[^1]     |SUPPORTED             |
 |`input`            |SUPPORTED             |
-|`datacheck`        |SUPPORTED             |
+|`datacheck`[^1]    |SUPPORTED             |
 |`parametercheck`   |SUPPORTED             |
-|`continue`         |SUPPORTED             |
+|`continue`[^1]     |SUPPORTED             |
 |`convert`          |NOT TESTED            |
 |`recover`          |NOT TESTED            |
-|`syntaxcheck`      |SUPPORTED             |
+|`syntaxcheck`[^1]  |SUPPORTED             |
 |`fil`              |NOT TESTED            |
 |`cpus`             |SUPPORTED             |
 |`mp_mode`          |SUPPORTED             |
@@ -57,10 +57,10 @@ Feedback and contribution welcome!
 |`globalmodel`      |SUPPORTED             |
 |`oldjob`           |SUPPORTED             |
 |`double`           |SUPPORTED             |
-|`cae`[^3]          |SUPPORTED (disabled by default) |
+|`cae`[^1][^3]      |SUPPORTED (disabled by default) |
 |`replay`[^5]       |PARTIALLY SUPPORTED   |
 |`nogui`[^5]        |PARTIALLY SUPPORTED   |
-|`viewer`[^3]       |SUPPORTED (disabled by default) |
+|`viewer`[^1][^3]   |SUPPORTED (disabled by default) |
 |`scratch`[^4]      |SUPPORTED             |
 |`fmu`              |NOT TESTED            |
 |`fmuinstance`      |NOT TESTED            |
@@ -68,13 +68,13 @@ Feedback and contribution welcome!
 |`optimization`     |NOT SUPPORTED         |
 |`python`[^5]       |PARTIALLY SUPPORTED   |
 |`script`[^5]       |PARTIALLY SUPPORTED   |
-|`make library`[^2][^6] |SUPPORTED             |
+|`make library`[^1][^2][^6] |SUPPORTED             |
 |`make job`         |NOT TESTED            |
-|`uniquelibs`[^2][^6]   |SUPPORTED             |
+|`uniquelibs`[^1][^2][^6]   |SUPPORTED             |
 |`sim_version`      |SUPPORTED             |
-|`odb2sim`          |SUPPORTED             |
-|`odbreport`        |SUPPORTED             |
-|`restartjoin`      |SUPPORTED             |
+|`odb2sim`[^1]          |SUPPORTED             |
+|`odbreport`[^1]        |SUPPORTED             |
+|`restartjoin`[^1]      |SUPPORTED             |
 
 [^1]: Working dir must be labeled as `abaqus_job_dir_t` type
 [^2]: Intel OneAPI compilers labeled as `bin_t` type
